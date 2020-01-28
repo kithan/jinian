@@ -1,126 +1,357 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-    <link rel="manifest" href="./manifest.json">
-    <title>相识小屋！</title>
-    <link href="./static/css/1.652b1808.chunk.css" rel="stylesheet">
-    <link href="./static/css/main.8beaf5fc.chunk.css" rel="stylesheet">
+    <meta charset="utf-8"/>
+    <title>相识小屋</title>
+    <link href="css/default.css" rel="stylesheet"/>
+    <link href="css/history.css" rel="stylesheet"/>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/garden_dev.js"></script>
+    <script type="text/javascript" src="js/functions_dev.js"></script>
 </head>
 <body>
-<noscript>You need to enable JavaScript to run this app.</noscript>
-<div id="root"></div>
-<script type="text/javascript">var extend = function (o) {
-        for (var a = arguments.length, n = Array(1 < a ? a - 1 : 0), e = 1; e < a; e++) n[e - 1] = arguments[e];
-        return Object.assign.apply(Object, [{}, o].concat(n))
-    }, parseColor = function (o) {
-        return "hsla(" + o.h + "," + o.s + "%," + o.l + "%," + o.a + ")"
-    }, Color = extend.bind(null, {h: 0, s: 100, l: 100, a: 1}), Vector = extend.bind(null, {x: 0, y: 0}),
-    Particle = extend.bind(null, {
-        pos: Vector(),
-        vel: Vector(),
-        angle: 0,
-        speed: 0,
-        radius: 0,
-        rotation: 0,
-        color: Color()
-    }),
-    colors = [Color({h: 20, s: 100, l: 50}), Color({h: 200, l: 50}), Color({h: 300, l: 50}), Color({h: 100, l: 40})],
-    animationLoop = function o(a) {
-        a.animation && a.animation(o.bind(null, a));
-        var n = a.ctx, e = n.canvas, r = rough.canvas(e);
-        n.clearRect(0, 0, e.width, e.height), a.particles.map(function (o, a) {
-            o.pos.y -= o.speed, o.pos.x = a % 2 ? o.pos.x + .2 * Math.sin(o.angle) : o.pos.x - .2 * Math.cos(o.angle), o.angle += .01, r.circle(o.pos.x, o.pos.y, o.radius, {
-                fill: parseColor(o.color),
-                roughness: 1.5 * Math.random(),
-                hachureGap: o.hachureGap,
-                hachureAngle: o.hachureAngle
-            }), r.line(o.pos.x, o.pos.y + 1.2 * o.radius, o.pos.x, o.pos.y + o.radius / 2, {bowing: 3 * Math.random()}), o.pos.y + 3 * o.radius < 0 && (o.pos.y = e.height + 3 * o.radius, o.pos.x = Math.random() * (e.width - o.radius))
-        })
-    }, scope = {
-        animation: requestAnimationFrame.bind(null),
-        ctx: document.createElement("canvas").getContext("2d"),
-        title: "Brian Douglas",
-        rotation: 0,
-        particles: []
-    };
-!function (o) {
-    var a = o.ctx.canvas;
-    a.width = window.innerWidth, a.height = window.innerHeight, document.body.appendChild(a);
-    for (var n = 50; n--;) o.particles.push(Particle({
-        pos: {x: Math.random() * a.width, y: Math.random() * a.height},
-        speed: Math.random() + .2,
-        radius: 60 * Math.random() + 20,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        hachureAngle: 90 * Math.random(),
-        hachureGap: 8 * Math.random() + 1
-    }));
-    animationLoop(o)
-}(scope), /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.addEventListener("resize", function () {
-    scope.ctx.canvas.width = window.innerWidth, scope.ctx.canvas.height = window.innerHeight
-})</script>
-<script type="text/javascript" src="./js/wmgwdw.js"></script>
-<script>!function (l) {
-    function e(e) {
-        for (var r, t, n = e[0], o = e[1], u = e[2], f = 0, i = []; f < n.length; f++) t = n[f], p[t] && i.push(p[t][0]), p[t] = 0;
-        for (r in o) Object.prototype.hasOwnProperty.call(o, r) && (l[r] = o[r]);
-        for (s && s(e); i.length;) i.shift()();
-        return c.push.apply(c, u || []), a()
+<div id="mainDiv">
+    <div id="content" style="width: 1110px; height: 625px; margin-top: 57px; margin-left: 165px;">
+        <div id="loveHeart">
+            <canvas id="garden" width="670" height="625"></canvas>
+            <div id="words">
+                <div id="messages">
+                    我们已经一起走过了
+                    <div id="elapseClock"><span class="digit">0</span> 年 <span class="digit">0</span> 月 <span
+                            class="digit">0</span> 天 <span class="digit">0</span> 时 <span class="digit">0</span> 分 <span
+                            class="digit">0</span> 秒
+                    </div>
+                </div>
+                <div id="loveu">
+                    my promise past shall always last!<br>
+                    <div class="signature"><a href="#" target="_blank">--爱你的阿加西</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var offsetX = $("#loveHeart").width() / 2;
+    var offsetY = $("#loveHeart").height() / 2 - 55;
+    var displayMode = 1;
+    var together = new Date(2017, 1, 18);
+    together.setHours(0);
+    together.setMinutes(0);
+    together.setSeconds(0);
+    together.setMilliseconds(0);
+
+    $("#loveHeart").click(function () {
+        displayMode *= -1;
+        timeElapse(together, displayMode);
+    });
+
+    if (!document.createElement('canvas').getContext) {
+        var msg = document.createElement("div");
+        msg.id = "errorMsg";
+        msg.innerHTML = "Your browser doesn't support HTML5!<br/>Recommend use Chrome 14+/IE 9+/Firefox 7+/Safari 4+";
+        document.body.appendChild(msg);
+        $("#code").css("display", "none")
+        $("#copyright").css("position", "absolute");
+        $("#copyright").css("bottom", "10px");
+        document.execCommand("stop");
+    } else {
+        setTimeout(function () {
+            adjustWordsPosition();
+            startHeartAnimation();
+        }, 100);
+
+        timeElapse(together, displayMode);
+        setInterval(function () {
+            timeElapse(together, displayMode);
+        }, 500);
+
+        adjustCodePosition();
+        $("#code").typewriter();
     }
+</script>
+<div class="head-warp">
+    <div class="head">
+        <div class="nav-box">
+            <ul>
+                <li class="cur" style="text-align:center; font-size:62px; font-family:'微软雅黑', '宋体';color:#00bbff">爱的回忆
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <div class="history">
 
-    function a() {
-        for (var e, r = 0; r < c.length; r++) {
-            for (var t = c[r], n = !0, o = 1; o < t.length; o++) {
-                var u = t[o];
-                0 !== p[u] && (n = !1)
-            }
-            n && (c.splice(r--, 1), e = f(f.s = t[0]))
-        }
-        return e
-    }
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2020年</a></h2>
+                <li class="green">
+                    <h3>01/24</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                第一次一起过年
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/guonian.jpg">
+                                <p>不平静的一年，但我们在一起第一次度过春节，很开心
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2019年</a></h2>
+                <li class="green">
+                    <h3>08</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                你怀孕了
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/huaiyun.jpeg">
+                                <p>
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2019年</a></h2>
+                <li class="green">
+                    <h3>02/14</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                我们结婚了！
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/wedding.jpg">
+                                <p>一场简单的婚礼，你很开心，我很幸福
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2018年</a></h2>
+                <li class="green">
+                    <h3>10/26</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                我们去拍了漂亮的婚纱照
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/wedding.jpg">
+                                <p>这一天，你很漂亮，这已经足够
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2018年</a></h2>
+                <li class="green">
+                    <h3>10/01</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                厦门之行
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/xiamen.jpg">
+                                <p>
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2018年</a></h2>
+                <li class="green">
+                    <h3>05/18</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                我们领证了
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/wedding.jpg">
+                                <p>
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2018年</a></h2>
+                <li class="green">
+                    <h3>03/24</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                订婚
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/wedding.jpg">
+                                <p>没有什么仪式，只有快乐幸福相伴
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2017年</a></h2>
+                <li class="green">
+                    <h3>10/01-07</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                大西北
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/dunhuang.jpg">
+                                <p>第一次一起长途远行，我们去过青海湖、到过传说中的茶卡，见过月牙泉的清澈，看过阿拉善的日出、还有那胡杨林的千奇百怪，一路上风景很美，而我看到的是你的笑容
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2017年</a></h2>
+                <li class="green">
+                    <h3>05/20</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                青岛看海
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/qingdao.jpg">
+                                <p>
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2017年</a></h2>
+                <li class="green">
+                    <h3>04/30</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                现场听你喜欢的歌
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/pushu.jpg"
+                                     >
+                                <p>
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2017年</a></h2>
+                <li class="green">
+                    <h3>04/29</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                第一次出行
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/tianjin.jpg">
+                                <p>第一次带着你去天津看风景
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+        <div class="history-date">
+            <ul>
+                <h2 class="first"><a href="#nogo">2017年</a></h2>
+                <li class="green">
+                    <h3>02/18</h3>
+                    <dl>
+                        <dt>
+                            <div class="feed_arrow">
+                            </div>
+                            <h4>
+                                相识于人海
+                            </h4>
+                            <div class="wrap">
+                                <img src="photo/xia.jpg">
+                                <p>第一次吃的虾吃虾涮，不好吃，却记得你的衣服和琐碎话语
+                                </p>
+                            </div>
+                        </dt>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
-    var t = {}, p = {2: 0}, c = [];
-
-    function f(e) {
-        if (t[e]) return t[e].exports;
-        var r = t[e] = {i: e, l: !1, exports: {}};
-        return l[e].call(r.exports, r, r.exports, f), r.l = !0, r.exports
-    }
-
-    f.m = l, f.c = t, f.d = function (e, r, t) {
-        f.o(e, r) || Object.defineProperty(e, r, {enumerable: !0, get: t})
-    }, f.r = function (e) {
-        "undefined" != typeof Symbol && Symbol.toStringTag && Object.defineProperty(e, Symbol.toStringTag, {value: "Module"}), Object.defineProperty(e, "__esModule", {value: !0})
-    }, f.t = function (r, e) {
-        if (1 & e && (r = f(r)), 8 & e) return r;
-        if (4 & e && "object" == typeof r && r && r.__esModule) return r;
-        var t = Object.create(null);
-        if (f.r(t), Object.defineProperty(t, "default", {
-                enumerable: !0,
-                value: r
-            }), 2 & e && "string" != typeof r) for (var n in r) f.d(t, n, function (e) {
-            return r[e]
-        }.bind(null, n));
-        return t
-    }, f.n = function (e) {
-        var r = e && e.__esModule ? function () {
-            return e.default
-        } : function () {
-            return e
-        };
-        return f.d(r, "a", r), r
-    }, f.o = function (e, r) {
-        return Object.prototype.hasOwnProperty.call(e, r)
-    }, f.p = "./";
-    var r = window.webpackJsonp = window.webpackJsonp || [], n = r.push.bind(r);
-    r.push = e, r = r.slice();
-    for (var o = 0; o < r.length; o++) e(r[o]);
-    var s = n;
-    a()
-}([])</script>
-<script src="./static/js/1.e0c0675d.chunk.js"></script>
-<script src="./static/js/main.e6f8fffb.chunk.js"></script>
+<script src="js/jquery.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
